@@ -39,7 +39,9 @@ public class OpsServiceImpl extends AbstractCommonService implements OpsService 
 
     @Override
     public Map<String, Object> homePageInfo() {
+        // Maps、Splitter都是是谷歌guava包工具类
         Map<String, Object> homePageInfoMap = Maps.newHashMap();
+        // 下两个信息是控制台ops导航下需要的信息
         homePageInfoMap.put("namesvrAddrList", Splitter.on(";").splitToList(rMQConfigure.getNamesrvAddr()));
         homePageInfoMap.put("useVIPChannel", Boolean.valueOf(rMQConfigure.getIsVIPChannel()));
         return homePageInfoMap;

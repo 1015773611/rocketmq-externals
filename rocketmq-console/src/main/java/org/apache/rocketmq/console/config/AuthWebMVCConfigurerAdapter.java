@@ -36,6 +36,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+// OK
 @Configuration
 public class AuthWebMVCConfigurerAdapter extends WebMvcConfigurerAdapter {
     @Autowired
@@ -47,7 +48,9 @@ public class AuthWebMVCConfigurerAdapter extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 是否开启登录
         if (configure.isLoginRequired()) {
+            // 拦截器拦截规则
             registry.addInterceptor(authInterceptor).addPathPatterns(
                     "/cluster/**",
                     "/consumer/**",
@@ -63,18 +66,22 @@ public class AuthWebMVCConfigurerAdapter extends WebMvcConfigurerAdapter {
         }
     }
 
+    // 参数解析器 详解 https://blog.csdn.net/songzehao/article/details/99641594
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new HandlerMethodArgumentResolver() {
 
+            // 满足某种要求，返回true，方可进入resolveArgument做参数处理
             @Override
             public boolean supportsParameter(MethodParameter methodParameter) {
+                // 参数类型是UserInfo
                 return methodParameter.getParameterType().isAssignableFrom(UserInfo.class);
             }
 
             @Override
             public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer,
                                           NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+                // 从session获取user信息，这样就比较优雅，每个controller带有user参数的，自动就被赋值了，token
                 UserInfo userInfo = (UserInfo) WebUtil.getValueFromSession((HttpServletRequest) nativeWebRequest.getNativeRequest(),
                         UserInfo.USER_INFO);
                 if (userInfo != null) {
@@ -84,6 +91,7 @@ public class AuthWebMVCConfigurerAdapter extends WebMvcConfigurerAdapter {
             }
         });
 
+        // 填充
         super.addArgumentResolvers(argumentResolvers);  //REVIEW ME
     }
 }

@@ -46,7 +46,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean login(HttpServletRequest request, HttpServletResponse response) {
+        // 从session获取用户信息
         if (WebUtil.getValueFromSession(request, WebUtil.USER_NAME) != null) {
+            // 获取成功返回true
             return true;
         }
 

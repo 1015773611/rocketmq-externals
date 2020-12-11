@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+// ops o是操作的意思，每秒多少操作
 @Controller
 @RequestMapping("/ops")
 public class OpsController {

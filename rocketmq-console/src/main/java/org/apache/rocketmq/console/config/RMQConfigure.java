@@ -32,11 +32,16 @@ import org.springframework.http.HttpStatus;
 
 import static org.apache.rocketmq.client.ClientConfig.SEND_MESSAGE_WITH_VIP_CHANNEL_PROPERTY;
 
+// OK
+// 配置类
 @Configuration
 @ConfigurationProperties(prefix = "rocketmq.config")
 public class RMQConfigure {
 
     private Logger logger = LoggerFactory.getLogger(RMQConfigure.class);
+    
+    // 下面的属性会和application.properties文件的rocketmq.config前缀匹配
+
     //use rocketmq.namesrv.addr first,if it is empty,than use system proerty or system env
     private volatile String namesrvAddr = System.getProperty(MixAll.NAMESRV_ADDR_PROPERTY, System.getenv(MixAll.NAMESRV_ADDR_ENV));
 
@@ -58,6 +63,7 @@ public class RMQConfigure {
     public void setNamesrvAddr(String namesrvAddr) {
         if (StringUtils.isNotBlank(namesrvAddr)) {
             this.namesrvAddr = namesrvAddr;
+            // 除了把值存到内存遍历 ，还会存到系统属性
             System.setProperty(MixAll.NAMESRV_ADDR_PROPERTY, namesrvAddr);
             logger.info("setNameSrvAddrByProperty nameSrvAddr={}", namesrvAddr);
         }
